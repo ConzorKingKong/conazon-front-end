@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import ProductCard from '../components/ProductsCard';
 
 function Products() {
-  const [products, setProducts] = useState()
+  const [products, setProducts] = useState([])
 
   async function callData() {
     const productsCall = await fetch('http://localhost/api/products/products/')
     const json = await productsCall.json()
     console.log(json)
-    setProducts(json)
+    setProducts(json.data)
   }
 
   useEffect(() => {

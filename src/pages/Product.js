@@ -16,7 +16,7 @@ function Product() {
         setProductInfo({product: {}, loading: false, exists: false})
         throw new Error("Error fetching")
       }
-      setProductInfo({product: json, loading: false, exists: true})
+      setProductInfo({product: json.data, loading: false, exists: true})
     } catch(e) {
       console.error(e)
     }
@@ -25,8 +25,6 @@ function Product() {
   useEffect(() => {
     callData()
   }, [])
-  
-
   
   return (
   <div>

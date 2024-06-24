@@ -8,18 +8,19 @@ import Products from './pages/Products';
 import Product from './pages/Product';
 import User from './pages/User'
 import NotFound from './pages/NotFound';
+import Cart from './pages/Cart';
 
 function App() {
   const [session, setSession] = useState({id: null})
 
   async function checkSession() {
     try {
-      const sessionCall = await fetch("http://localhost/api/users/verify/", {credentials: "include"})
+      const sessionCall = await fetch("http://localhost/api/users/verify", {credentials: "include"})
       if (!sessionCall.ok) {
-        throw new Error("call bad potentially cors")
+        throw new Error("call bad")
       }
       const json = await sessionCall.json()
-      setSession(json.message)
+      setSession(json.data)
     } catch (e) {
       console.error(e)
     }
@@ -41,6 +42,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<Product />}/>
         <Route path="/user/:userId" element={<User />}/>
+        <Route path="/cart" element={<Cart id={session.id} />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

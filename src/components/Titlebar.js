@@ -14,6 +14,7 @@ function Titlebar(props) {
       <Link to="/products">Products</Link>
       {!props.id && <Link to="http://localhost:8080/auth/google/login">Login</Link>}
       {props.id && <Link to={"/user/" + props.id}>Profile</Link>}
+      {props.id && <Link to={"/cart/"}>Cart</Link>}
     </nav>
   );
 }
