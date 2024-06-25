@@ -11,16 +11,28 @@ import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
 
 function App() {
-  const [session, setSession] = useState({id: null})
+  const [session, setSession] = useState({id: null, cart: null, purchases: null})
 
   async function checkSession() {
     try {
-      const sessionCall = await fetch("http://localhost/api/users/verify", {credentials: "include"})
+      const sessionCall = await fetch("http://localhost/api/verify", {credentials: "include"})
+      console.log(sessionCall)
       if (!sessionCall.ok) {
-        throw new Error("call bad")
+        throw new Error("session call error")
       }
-      const json = await sessionCall.json()
-      setSession(json.data)
+      const sessionJson = await sessionCall.json()
+      const id = sessionJson.data.id
+      const cartCall = await fetch(`http://localhost/api/cart/user/${id}`, {credentials: "include"})
+      if (!cartCall.ok) {
+        throw new Error("Cart call error")
+      }
+      const cartJson = await cartCall.json()
+      const purchasesCall = await fetch(`http://localhost/api/checkout/user/${id}`, {credentials: "include"})
+      if (!purchasesCall.ok) {
+        throw new Error("Purchases call error")
+      }
+      const purchasesJson = await purchasesCall.json()
+      setSession({id, cart: cartJson.data, purchases: purchasesJson.data})
     } catch (e) {
       console.error(e)
     }
@@ -30,19 +42,17 @@ function App() {
     checkSession()
   }, [])
 
-  console.log(session)
   return (
     <div>
       <Titlebar id={session.id} />
-      <Searchbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<Product />}/>
-        <Route path="/user/:userId" element={<User />}/>
-        <Route path="/cart" element={<Cart id={session.id} />}/>
+        <Route path="/user/:userId" element={<User id={session.id} cart={session.cart} purchases={session.purchases} />}/>
+        <Route path="/cart" element={<Cart cart={session.cart} />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

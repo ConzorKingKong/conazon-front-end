@@ -7,8 +7,7 @@ function Product() {
 
   async function callData() {
     try {
-      console.log("PRODUCTID", productId)
-      const productCall = await fetch(`http://localhost/api/products/products/${productId}`)
+      const productCall = await fetch(`http://localhost/api/products/${productId}`)
       const json = await productCall.json()
       if (productCall.status !== 200) {
         // handle non existent product
@@ -34,7 +33,7 @@ function Product() {
     {(!productInfo.loading && productInfo.exists === false) && (
       <div>Product does not exist</div>
     )}
-    {(!productInfo.loading && productInfo.exists === true) && (
+    {(!productInfo.loading && productInfo.exists) && (
       <div>{JSON.stringify(productInfo.product)}</div>
     )}
   </div>

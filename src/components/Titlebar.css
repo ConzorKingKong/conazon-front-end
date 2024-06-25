@@ -1,4 +1,14 @@
-.Titlebar ul {
+.Titlebar {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(15, 17, 17);
+    color: white;
+    padding: 1em;
+}
+
+.Titlebar div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

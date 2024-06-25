@@ -1,0 +1,9 @@
+.products-hero {
+  display: flex;
+  text-align: center;
+}
+
+.products-grid {
+  display: flex;
+  justify-content: space-around;
+}
