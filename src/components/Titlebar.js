@@ -9,10 +9,8 @@ function Titlebar(props) {
     <nav className="Titlebar">
       <div>
         <Link to="/">Conazon</Link>
-        <Link to="/about">About</Link>
       </div>
       <div>
-        <Link to="/products">Products</Link>
         <Searchbar />
       </div>
       <div>
