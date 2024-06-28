@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: rgb(15, 17, 17);
+    background-color: #131921;
     color: white;
     padding: 1em;
 }
@@ -11,4 +11,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.Titlebar div a {
+    color: white;
+    text-decoration: none;
+}
+
+.Titlebar div a:nth-child(2) {
+    padding-left: 1.5em;
 }
