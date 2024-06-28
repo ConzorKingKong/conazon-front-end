@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { Route, Routes } from 'react-router-dom';
 import Titlebar from './components/Titlebar';
-import Searchbar from './components/Searchbar';
+import Productbar from './components/Productbar'
 import Home from './pages/Home';
 import About from './pages/About';
+import Contact from './pages/Contact'
+import Categories from './pages/Categories'
 import Products from './pages/Products';
 import Product from './pages/Product';
 import User from './pages/User'
@@ -45,10 +47,13 @@ function App() {
   return (
     <div>
       <Titlebar id={session.id} />
+      <Productbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/categories" element={<Categories />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<Product />}/>
         <Route path="/user/:userId" element={<User id={session.id} cart={session.cart} purchases={session.purchases} />}/>
