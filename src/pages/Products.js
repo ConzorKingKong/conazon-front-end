@@ -18,9 +18,9 @@ function Products() {
 
   return (
     <div className={"products"}>
-      <div>
+      <h1>
         products
-      </div>
+      </h1>
       <div className={"products-grid"}>
         {products && products.map(product => {
           const {id, name, description, mainImage, category, price, author} = product
