@@ -1,0 +1,19 @@
+.Productbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #232f3e;
+  color: white;
+  padding: 1em;
+}
+
+.Productbar div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Productbar div a {
+  color: white;
+  text-decoration: none;
+}
