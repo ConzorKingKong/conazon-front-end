@@ -19,7 +19,7 @@ function Products() {
   return (
     <div className={"products"}>
       <h1>
-        products
+        Products
       </h1>
       <div className={"products-grid"}>
         {products && products.map(product => {

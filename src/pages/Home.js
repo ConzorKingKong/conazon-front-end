@@ -1,10 +1,6 @@
 import React from 'react';
 import './Home.css'
 
-async function getProducts() {
-
-}
-
 function Home () {
   return (
     <div className='home'>
@@ -14,7 +10,6 @@ function Home () {
       <p>
         The greatest ebook store
       </p>
-
     </div>
   )
 }

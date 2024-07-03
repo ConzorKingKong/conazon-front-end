@@ -1,8 +1,16 @@
 .products h1 {
   text-align: center;
+  padding: 0.7em;
 }
 
 .products-grid {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 69%;
+}
+
+.products-grid div {
+  margin-bottom: 3em;
 }
