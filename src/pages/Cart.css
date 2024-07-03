@@ -1,7 +1,11 @@
 .cart {
   margin: auto;
   width: 69%;
-  margin-top: 5em;
+}
+
+.cart h1 {
+  text-align: center;
+  padding: 0.7em;
 }
 
 .cart-cart-wrapper {

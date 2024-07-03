@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import './Product.css'
+import './Product.css';
+import { PROTOCOL, DOMAIN } from '../state/Env';
 
 function Product() {
   const { productId } = useParams()
@@ -9,7 +10,7 @@ function Product() {
   // should check if product is already owned
   async function callData() {
     try {
-      const productCall = await fetch(`http://localhost/api/products/${productId}`)
+      const productCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/products/${productId}`)
       const json = await productCall.json()
       if (productCall.status !== 200) {
         // handle non existent product

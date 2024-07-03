@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import { SESSION } from '../state/SessionProvider'
 import './Cart.css'
 import ProductCard from '../components/ProductsCard'
+import { PROTOCOL, DOMAIN } from '../state/Env'
 
 function Cart() {
   const {sessionState, setSessionState} = useContext(SESSION)
@@ -10,7 +11,7 @@ function Cart() {
 
   async function productsInCart() {
     if (!cart || !cart[0]) return
-    const responses = await Promise.all(cart.map(item => fetch(`http://localhost/api/products/${item.id}/`)));
+    const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.id}/`)));
     const data = await Promise.all(responses.map(item => item.json()));
     const result = data.map((item, i) => {
       item.data.userQuantity = cart[i].quantity
@@ -25,7 +26,7 @@ function Cart() {
 
   async function removeFromCart(id) {
     try {
-      const deleteCall = await fetch(`http://localhost/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
+      const deleteCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
       if (deleteCall.status !== 200) {
         throw new Error("Delete call error")
       }
@@ -43,7 +44,7 @@ function Cart() {
   return (
     <div className={"cart"} >
       <h1>Current Cart</h1>
-      <p>{(!products || !products[0] && "Empty")}</p>
+      <p style={{textAlign: "center"}}>{((!products || !products[0]) && "Empty")}</p>
       <div className='cart-cart-wrapper'>
         {(products && products[0]) && products.map((item, i) => {
           const {id, name, description, mainImage, category, price, author} = item

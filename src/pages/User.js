@@ -3,6 +3,7 @@ import { SESSION } from '../state/SessionProvider';
 import { useParams } from 'react-router-dom';
 import "./User.css"
 import ProductCard from '../components/ProductsCard';
+import { PROTOCOL, DOMAIN } from '../state/Env';
 
 function User() {
   const {sessionState, setSessionState} = useContext(SESSION)
@@ -14,7 +15,7 @@ function User() {
   // call to get general info of user. If user path matches sessionId, call for purchases
   async function callUserAndProducts() {
     try {
-      const userCall = await fetch(`http://localhost/api/users/${userId}`)
+      const userCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/users/${userId}`)
       if (userCall.status === 404) {
         // user doesn't exist
         return
@@ -29,7 +30,7 @@ function User() {
         return
       }
       if (!cart || !cart[0]) return
-      const responses = await Promise.all(cart.map(item => fetch(`http://localhost/api/products/${item.id}/`)));
+      const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.id}/`)));
       const data = await Promise.all(responses.map(item => item.json()));
       const result = data.map((item, i) => {
         item.data.userQuantity = cart[i].quantity
@@ -47,7 +48,7 @@ function User() {
 
   async function removeFromCart(id) {
     try {
-      const deleteCall = await fetch(`http://localhost/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
+      const deleteCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
       if (deleteCall.status !== 200) {
         throw new Error("Delete call error")
       }

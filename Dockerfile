@@ -4,6 +4,7 @@ RUN mkdir public
 RUN mkdir src
 COPY package.json  ./
 RUN npm install
+COPY .env .
 COPY public ./public
 COPY src ./src
 EXPOSE 3000

@@ -17,7 +17,7 @@ function Titlebar() {
         <Searchbar />
       </div>
       <div>
-        {!sessionState.id && <Link to="http://localhost:8080/auth/google/login">Login</Link>}
+        {!sessionState.id && <Link to="${PROTOCOL}://${DOMAIN}:8080/auth/google/login">Login</Link>}
         {sessionState.id && <Link to={"/user/" + sessionState.id}>Profile</Link>}
         {sessionState.id && <Link to={"/cart/"}>Cart</Link>}
       </div>

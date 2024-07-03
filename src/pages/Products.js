@@ -4,10 +4,12 @@ import "./Products.css"
 
 function Products() {
   const [products, setProducts] = useState([])
+  const PROTOCOL = process.env.REACT_APP_PROTOCOL
+  const DOMAIN = process.env.REACT_APP_DOMAIN
 
   async function callData() {
     // end slash in url required
-    const productsCall = await fetch(`http://localhost/api/products/`)
+    const productsCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/products/`)
     const json = await productsCall.json()
     setProducts(json.data)
   }
