@@ -1,6 +1,11 @@
 .cart {
   margin: auto;
-  width: 65%;
+  width: 69%;
   margin-top: 5em;
-  background-color: grey;
+}
+
+.cart-cart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
 }

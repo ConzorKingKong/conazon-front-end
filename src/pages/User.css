@@ -1,6 +1,16 @@
 .user {
   margin: auto;
-  width: 65%;
+  width: 69%;
   margin-top: 5em;
-  background-color: grey;
+}
+
+.user-cart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.user-purchases {
+  display: flex;
+  justify-content: space-between;
 }

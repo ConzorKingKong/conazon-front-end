@@ -26,7 +26,7 @@ function Products() {
           const {id, name, description, mainImage, category, price, author} = product
           return (
           <div key={id}>
-            <ProductCard id={id} name={name} description={description} mainImage={mainImage} category={category} price={price} author={author} />
+            <ProductCard id={id} name={name} description={description} mainImage={mainImage} category={category} price={price} author={author} width={300} height={300} />
           </div>
           )
         })}

@@ -2,9 +2,10 @@ import React, {useState, useEffect, useContext} from 'react';
 import { SESSION } from '../state/SessionProvider';
 import { useParams } from 'react-router-dom';
 import "./User.css"
+import ProductCard from '../components/ProductsCard';
 
 function User() {
-  const {sessionState} = useContext(SESSION)
+  const {sessionState, setSessionState} = useContext(SESSION)
   const {id, purchases, cart} = sessionState
   const userId = parseInt(useParams().userId)
 
@@ -44,6 +45,23 @@ function User() {
     callUserAndProducts()
   }, [])
 
+  async function removeFromCart(id) {
+    try {
+      const deleteCall = await fetch(`http://localhost/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
+      if (deleteCall.status !== 200) {
+        throw new Error("Delete call error")
+      }
+      const data = await deleteCall.json()
+      // update state to refresh page
+      sessionState.cart = sessionState.cart.filter(item => {
+        return item.id !== id
+      }).map(i => i)
+      setSessionState(sessionState)
+    } catch(e) {
+      return console.error(e)
+    }
+  }
+
   return (
   <div className={"user"}>
     <div>
@@ -53,12 +71,13 @@ function User() {
     {id === userId && (<div>
       <div>
         <p>Current Cart:</p>
-        <div>
+        <div className='user-cart-wrapper'>
         {(userInfo.products && userInfo.products[0]) && userInfo.products.map((item, i) => {
+          const {id, name, description, mainImage, category, price, author} = item
           return (
             <div key={i}>
-              <p>{item.name}</p>
-              <p>{item.userQuantity}</p>
+              <ProductCard id={id} name={name} description={description} mainImage={mainImage} category={category} price={price} author={author} width={100} height={100} />
+              <button onClick={() => {removeFromCart(id)}}>Remove from cart</button>
             </div>
           )
         })}
@@ -69,7 +88,7 @@ function User() {
         <div>
           {purchases.map((purchase, i) => {
             return (
-              <div key={i} >
+              <div key={i} className='user-purchases'>
                 <p>Purchased: {new Date(purchase.createdAt).toISOString().split('T')[0]}</p>
                 <p>Cost: {purchase.totalPrice}</p>
                 <p>Status: {purchase.billingStatus}</p>

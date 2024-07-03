@@ -2,13 +2,14 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 function ProductCard(props) {
+  const {id, mainImage, name, author, description, price, width, height} = props
   return (
-    <Link to={"/products/" + props.id} style={{textDecoration: "none"}}>
-      <img src={props.mainImage} width={300} height={300} alt={props.name} />
-      <p>{props.name}</p>
-      <p>{props.author}</p>
-      <p>{props.description}</p>
-      <p>${props.price}</p>
+    <Link to={"/products/" + id} style={{textDecoration: "none"}}>
+      <img src={mainImage} width={width} height={height} alt={name} />
+      <p>{name}</p>
+      <p>{author}</p>
+      <p>{description}</p>
+      <p>${price}</p>
     </Link>
   )
 }
