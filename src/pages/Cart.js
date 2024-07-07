@@ -11,7 +11,7 @@ function Cart() {
 
   async function productsInCart() {
     if (!cart || !cart[0]) return
-    const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.id}/`)));
+    const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.productId}/`)));
     const data = await Promise.all(responses.map(item => item.json()));
     const result = data.map((item, i) => {
       item.data.userQuantity = cart[i].quantity
@@ -24,16 +24,18 @@ function Cart() {
     productsInCart()
   }, [])
 
-  async function removeFromCart(id) {
+  async function removeFromCart(productId) {
     try {
-      const deleteCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/${id}`, {method: 'DELETE', credentials: 'include'})
+      let cartId
+      cart.forEach(item => {if (item.productId === productId) cartId = item.id})
+      const deleteCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/${cartId}`, {method: 'DELETE', credentials: 'include'})
       if (deleteCall.status !== 200) {
         throw new Error("Delete call error")
       }
       const data = await deleteCall.json()
       // update state to refresh page
       sessionState.cart = sessionState.cart.filter(item => {
-        return item.id !== id
+        return item.productId !== productId
       }).map(i => i)
       setSessionState(sessionState)
     } catch(e) {
