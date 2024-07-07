@@ -7,7 +7,21 @@ import Searchbar from './Searchbar';
 
   
 function Titlebar() {
-  const {sessionState} = useContext(SESSION)
+  const {sessionState, setSessionState} = useContext(SESSION)
+
+  async function onButtonClick() {
+    try {
+      const logoutCall = await fetch(`${PROTOCOL}://${DOMAIN}/logout`, {credentials: 'include', method: "DELETE"})
+      if (logoutCall.status !== 200) {
+        throw new Error("Error in logout call")
+      }
+      // need to handle what to do when on cart page
+      setSessionState({id: null, cart: [], purchases: []})
+    } catch(e) {
+      console.error(e)
+      return
+    }
+  }
 
   return (
     <nav className="Titlebar">
@@ -18,9 +32,10 @@ function Titlebar() {
         <Searchbar />
       </div>
       <div>
-        {!sessionState.id && <Link to={`${PROTOCOL}://${DOMAIN}/auth/google/login`}>Login</Link>}
+        {!sessionState.id && <a href={`${PROTOCOL}://${DOMAIN}/auth/google/login`}>Login</a>}
         {sessionState.id && <Link to={"/user/" + sessionState.id}>Profile</Link>}
         {sessionState.id && <Link to={"/cart/"}>Cart</Link>}
+        {sessionState.id && <button onClick={() => {onButtonClick()}}>Logout</button>}
       </div>
     </nav>
   );
