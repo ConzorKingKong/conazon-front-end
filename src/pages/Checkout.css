@@ -1,0 +1,15 @@
+.checkout {
+  margin: auto;
+  width: 69%;
+}
+
+.checkout h1 {
+  text-align: center;
+  padding: 0.7em;
+}
+
+.checkout-cart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}

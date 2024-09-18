@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { SESSION } from '../state/SessionProvider'
-import './Cart.css'
 import ProductCard from '../components/ProductsCard'
 import { PROTOCOL, DOMAIN } from '../state/Env'
+import { Link } from 'react-router-dom'
+import './Cart.css'
 
 function Cart() {
   const {sessionState, setSessionState} = useContext(SESSION)
@@ -57,6 +58,11 @@ function Cart() {
             </div>
           )
         })}
+      </div>
+      <div>
+        <button>
+          <Link to={"/checkout"}>Checkout</Link>
+        </button>
       </div>
     </div>
   )

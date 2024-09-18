@@ -11,6 +11,7 @@ import Product from './pages/Product';
 import User from './pages/User'
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/products/:productId" element={<Product />}/>
         <Route path="/user/:userId" element={<User />}/>
         <Route path="/cart" element={<Cart />}/>
+        <Route path="/checkout" element={<Checkout />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
