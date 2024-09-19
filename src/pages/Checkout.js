@@ -26,18 +26,29 @@ function Checkout() {
   }, [])
 
   const submitCheckout = async () => {
-    let data
+    let checkoutData
     try {
       const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/checkout/`, {
         credentials: "include",
         method: "POST",
         body: JSON.stringify({})
       })
-      data = await response.json()
+      checkoutData = await response.json()
     } catch(e) {
       console.error(e)
     }
-    console.log(data)
+    // this is mad illegal, remove this later when integrating rabbitmq
+    let cartData
+    try {
+      const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/user/${sessionState.id}`, {
+        credentials: "include",
+        method: "PUT"
+      })
+      cartData = await response.json()
+      setSessionState({id: sessionState.id, cart: [], purchases: sessionState.purchases.push(checkoutData.data)})
+    } catch (e) {
+      console.error(e)
+    }
     window.location = `${PROTOCOL}://${DOMAIN}/user/${sessionState.id}`
   }
 

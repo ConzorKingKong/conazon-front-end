@@ -33,12 +33,9 @@ function Cart() {
       if (deleteCall.status !== 200) {
         throw new Error("Delete call error")
       }
-      const data = await deleteCall.json()
-      // update state to refresh page
-      sessionState.cart = sessionState.cart.filter(item => {
-        return item.productId !== productId
-      }).map(i => i)
-      setSessionState(sessionState)
+      sessionState.cart = sessionState.cart.filter(item => item.productId !== productId).map(i => i)
+      setSessionState({...sessionState})
+      setProducts(products.filter(item => item.id !== productId).map(i => i))
     } catch(e) {
       return console.error(e)
     }
@@ -60,9 +57,9 @@ function Cart() {
         })}
       </div>
       <div>
-        <button>
+        {(products && products[0]) && (<button>
           <Link to={"/checkout"}>Checkout</Link>
-        </button>
+        </button>)}
       </div>
     </div>
   )

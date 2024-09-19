@@ -25,18 +25,17 @@ function User() {
       }
       const userJson = await userCall.json()
       const {name, picture} = userJson.data
-      if (id !== userId) {
-        setUserInfo({name, picture, products: []})
+      if (id !== userId || (!cart || !cart[0])) {
+        setUserInfo({exists: true, name, picture, products: []})
         return
       }
-      if (!cart || !cart[0]) return
       const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.productId}/`)));
       const data = await Promise.all(responses.map(item => item.json()));
       const result = data.map((item, i) => {
         item.data.userQuantity = cart[i].quantity
         return item.data
       })
-      setUserInfo({name, picture, products: result})
+      setUserInfo({exists: true, name, picture, products: result})
     } catch(e) {
       console.error(e)
     }
@@ -49,20 +48,34 @@ function User() {
   async function removeFromCart(productId) {
     try {
       let cartId
-      cart.forEach(item => {if (item.productId === productId) cartId = item.id})
+      cart.forEach(item => {
+        if (item.productId === productId) {
+          return cartId = item.id
+        }
+      })
       const deleteCall = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/${cartId}`, {method: 'DELETE', credentials: 'include'})
       if (deleteCall.status !== 200) {
         throw new Error("Delete call error")
       }
-      const data = await deleteCall.json()
-      // update state to refresh page
-      sessionState.cart = sessionState.cart.filter(item => {
-        return item.productId !== id
+      const newCart = sessionState.cart.filter(item => {
+        return item.productId !== productId
       }).map(i => i)
-      setSessionState(sessionState)
+      setSessionState({...sessionState, cart: newCart})
+      userInfo.products = userInfo.products.filter(item => {
+        return item.id !== productId
+      }).map(i => i)
+      setUserInfo({...userInfo})
     } catch(e) {
       return console.error(e)
     }
+  }
+
+  if (!userInfo.exists) {
+    return (
+      <>
+        <p>User does not exist</p>
+      </>
+    )
   }
 
   return (
@@ -75,15 +88,16 @@ function User() {
       <div>
         <p>Current Cart:</p>
         <div className='user-cart-wrapper'>
-        {(userInfo.products && userInfo.products[0]) && userInfo.products.map((item, i) => {
-          const {id, name, description, mainImage, category, price, author} = item
-          return (
-            <div key={i}>
-              <ProductCard id={id} name={name} description={description} mainImage={mainImage} category={category} price={price} author={author} width={100} height={100} />
-              <button onClick={() => {removeFromCart(id)}}>Remove from cart</button>
-            </div>
-          )
-        })}
+          {(!userInfo.products || !userInfo.products[0]) && (<p>Empty Cart</p>)}
+          {(userInfo.products && userInfo.products[0]) && userInfo.products.map((item, i) => {
+            const {id, name, description, mainImage, category, price, author} = item
+            return (
+              <div key={i}>
+                <ProductCard id={id} name={name} description={description} mainImage={mainImage} category={category} price={price} author={author} width={100} height={100} />
+                <button onClick={() => {removeFromCart(id)}}>Remove from cart</button>
+              </div>
+            )
+          })}
         </div>
       </div>
       <div>

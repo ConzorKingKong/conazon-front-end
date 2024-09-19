@@ -38,7 +38,7 @@ function Product() {
       }
       const json = await addCall.json()
       sessionState.cart.push(json.data)
-      setSessionState(sessionState)
+      setSessionState({...sessionState})
     } catch(e) {
       return console.error(e)
     }
