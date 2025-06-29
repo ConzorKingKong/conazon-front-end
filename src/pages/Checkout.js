@@ -26,18 +26,33 @@ function Checkout() {
   }, [])
 
   const submitCheckout = async () => {
+    // get user info for sending email
+    let userData
+    try {
+      const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/me`, {
+        credentials: "include",
+        method: "GET"
+      })
+      userData = await response.json()
+    } catch(e) {
+      console.error(e)
+    }
+    
     let checkoutData
     try {
       const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/checkout/`, {
         credentials: "include",
         method: "POST",
-        body: JSON.stringify({})
+        body: JSON.stringify(userData.data)
       })
       checkoutData = await response.json()
     } catch(e) {
       console.error(e)
     }
-    // this is mad illegal, remove this later when integrating rabbitmq
+
+    // this is mad illegal
+    // This code resets the users cart. This should be done on the back-end and the api endpoint needs to be rewritten
+    // it is not restful it's a nightmare
     let cartData
     try {
       const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/user/${sessionState.id}`, {
