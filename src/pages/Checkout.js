@@ -37,13 +37,23 @@ function Checkout() {
     } catch(e) {
       console.error(e)
     }
+
+    // get prices from back-end
+    // very illegal, we remove this after implementing m2m auth/admin ability
+    const responses = await Promise.all(cart.map(item => fetch(`${PROTOCOL}://${DOMAIN}/api/products/${item.productId}/`)));
+    const data = await Promise.all(responses.map(item => item.json()));
+    
+    let total = 0
+    data.forEach(item => {
+      total += item.data.price
+    })
     
     let checkoutData
     try {
       const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/checkout/`, {
         credentials: "include",
         method: "POST",
-        body: JSON.stringify(userData.data)
+        body: JSON.stringify({user: userData.data, carts: sessionState.cart, total})
       })
       checkoutData = await response.json()
     } catch(e) {
@@ -55,9 +65,9 @@ function Checkout() {
     // it is not restful it's a nightmare
     let cartData
     try {
-      const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart/user/${sessionState.id}`, {
+      const response = await fetch(`${PROTOCOL}://${DOMAIN}/api/cart`, {
         credentials: "include",
-        method: "PUT"
+        method: "PATCH"
       })
       cartData = await response.json()
       setSessionState({id: sessionState.id, cart: [], purchases: sessionState.purchases.push(checkoutData.data)})

@@ -108,9 +108,7 @@ function User() {
               <div key={i} className='user-purchases'>
                 <p>Purchased: {new Date(purchase.createdAt).toISOString().split('T')[0]}</p>
                 <p>Cost: {purchase.totalPrice}</p>
-                <p>Status: {purchase.billingStatus}</p>
-                <p>Shipping status: {purchase.shippingStatus}</p>
-                <p>Tracking: {purchase.trackingNumber}</p>
+                <p>Items: {purchase.cartItemIds}</p>
               </div>
             )
           })}

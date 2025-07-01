@@ -14,7 +14,7 @@ function SessionProvider({children}) {
       }
       const sessionJson = await sessionCall.json()
       const {id} = sessionJson.data
-      const calls = await Promise.all([fetch(`${PROTOCOL}://${DOMAIN}/api/cart/user/${id}`, {credentials: "include"}), fetch(`${PROTOCOL}://${DOMAIN}/api/checkout/user/${id}`, {credentials: "include"})])
+      const calls = await Promise.all([fetch(`${PROTOCOL}://${DOMAIN}/api/cart/`, {credentials: "include"}), fetch(`${PROTOCOL}://${DOMAIN}/api/checkout/`, {credentials: "include"})])
       const jsons = await Promise.all(calls.map(item => item.json()))
       setSessionState({id, cart: jsons[0].data, purchases: jsons[1].data})
     } catch (e) {
